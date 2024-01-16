@@ -1,5 +1,4 @@
-import { OnInit } from '@angular/core';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
 
 @Component({
@@ -17,7 +16,8 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Home',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }
+                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
+                    { label: 'Usuarios', icon: 'pi pi-fw pi-user', routerLink: ['user'] },
                 ]
             },
             {
