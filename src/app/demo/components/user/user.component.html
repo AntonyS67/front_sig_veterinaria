@@ -11,12 +11,18 @@
                         <tr>
                             <th>Username</th>
                             <th>Role</th>
+                            <th>Acciones</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-data>
                         <tr>
                             <td>{{data.username}}</td>
                             <td>{{data.role_id == 0 ? 'Usuario' : 'Administrador'}}</td>
+                            <td>
+                                <button (click)="editUser(data)" pButton icon="pi pi-user-edit" pTooltip="Editar" class="text-primary-600" tooltopPosition="top"
+                                style="width: auto;background: none;border: 0px;padding: 5px;"
+                                ></button>
+                            </td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage">
@@ -31,27 +37,28 @@
             </p-panel>
         </div>
 
-        <p-dialog [header]="titleForm" [(visible)]="isUserDialog" [style]="{width:'800px',height:'600px'}" [modal]="true" class="p-fluid">
+        <p-dialog [header]="titleForm" [(visible)]="isUserDialog" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 <form [formGroup]="formUser">
                     <div class="p-fluid p-formgrid grid">
                         <div class="col-12">
                             <p-dropdown
                                 [ngClass]="{'ng-dirty ng-invalid':submitted && formUser.get('role_id')?.hasError('required')}"
+                                [(ngModel)]="user.role_id"
                                 required appendTo="body" formControlName="role_id" placeholder="Seleccione" [options]="lstRoles" optionLabel="role" optionValue="id" [showClear]="true">
                             </p-dropdown>
                             <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formUser.get('role_id')?.hasError('required')">Seleccione el rol</small>
                         </div>
                         <div class="col-12">
                             <span class="p-float-label">
-                                <input id="username" type="text" class="p-inputtext p-component p-element" placeholder="Ingreser el usuario" pInputText formControlName="username" required>
+                                <input [(ngModel)]="user.username" id="username" type="text" class="p-inputtext p-component p-element" placeholder="Ingreser el usuario" pInputText formControlName="username" required>
                                 <label for="username">Username</label>
                             </span>
                             <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formUser.get('username')?.hasError('required')">Ingrese el usuario</small>
                         </div>
-                        <div class="col-12">
+                        <div *ngIf="!isEdit" class="col-12">
                             <span class="p-float-label">
-                                <input id="password" type="password" class="p-inputtext p-component p-element" placeholder="Ingreser la contraseña" pInputText formControlName="password" required>
+                                <input [(ngModel)]="user.password" id="password" type="password" class="p-inputtext p-component p-element" placeholder="Ingreser la contraseña" pInputText formControlName="password" required>
                                 <label for="password">Contraseña</label>
                             </span>
                             <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formUser.get('password')?.hasError('required')">Ingrese la contraseña</small>
@@ -61,7 +68,7 @@
             </ng-template>
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [loading]="loadingSave" (click)="saveUser()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [loading]="loadingSave" (click)="saveUser(user)"></button>
             </ng-template>
         </p-dialog>
     </div>

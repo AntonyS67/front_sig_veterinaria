@@ -9,6 +9,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 
@@ -26,7 +27,8 @@ import { ToastModule } from 'primeng/toast';
     ButtonModule,
     ReactiveFormsModule,
     InputTextModule,
-    ToastModule
+    ToastModule,
+    TooltipModule
   ],
   providers:[
     MessageService

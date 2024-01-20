@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ROWS_DEFAULT, ROWS_OPTIONS } from '../../api/config';
+import { User } from '../../api/user';
 import { CommonService } from '../../service/common.service';
 import { UserService } from '../../service/user.service';
 import { SharedModule } from '../../shared/shared/shared.module';
@@ -44,7 +45,10 @@ export class UserComponent implements OnInit{
 
     formUser:FormGroup;
 
-    constructor(public userService:UserService,fb:FormBuilder,public commonService:CommonService){
+    user!:User;
+    isEdit:boolean = false;
+
+    constructor(public userService:UserService,public fb:FormBuilder,public commonService:CommonService){
         this.formUser = fb.group({
             username:['',[Validators.required]],
             password:['',[Validators.required]],
@@ -83,13 +87,21 @@ export class UserComponent implements OnInit{
         this.isUserDialog = false;
         this.submitted = false;
         this.loadingSave = false;
+        this.isEdit = false;
     }
     newUser(){
         this.isUserDialog = true;
         this.submitted = false;
+        this.isEdit = false;
+        this.user = {};
+        this.formUser = this.fb.group({
+            username:['',[Validators.required]],
+            password:['',[Validators.required]],
+            role_id:['',[Validators.required]]
+        })
     }
 
-    saveUser(){
+    saveUser(item:User){
         this.submitted = true;
 
         let value = this.formUser.value;
@@ -100,7 +112,7 @@ export class UserComponent implements OnInit{
         if(this.formUser.valid){
             this.loadingSave = true;
             const req = {
-                id:0,
+                id:item.id ? item.id : 0,
                 username:value.username,
                 password:value.password,
                 role_id:value.role_id
@@ -117,5 +129,18 @@ export class UserComponent implements OnInit{
                 }
             })
         }
+    }
+
+    editUser(item:User){
+       this.titleForm = 'Editar Usuario';
+       this.isUserDialog = true;
+       this.user = item;
+       this.isEdit = true;
+
+       this.formUser = this.fb.group({
+            username:['',[Validators.required]],
+            password:[''],
+            role_id:['',[Validators.required]]
+        })
     }
 }
