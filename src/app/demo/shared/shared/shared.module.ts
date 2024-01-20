@@ -1,7 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
+import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 
 
 
@@ -12,7 +19,17 @@ import { TableModule } from 'primeng/table';
   ],
   exports:[
     TableModule,
-    PaginatorModule
+    PaginatorModule,
+    PanelModule,
+    CommonModule,
+    DialogModule,
+    ButtonModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    ToastModule
+  ],
+  providers:[
+    MessageService
   ]
 })
 export class SharedModule { }

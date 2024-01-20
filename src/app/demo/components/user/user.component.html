@@ -1,29 +1,68 @@
+<p-toast key="tst"></p-toast>
 <div class="grid">
 	<div class="col-12">
 		<div class="card">
-			<h5>Usuarios</h5>
-            <p-table [value]="lstUsers" [loading]="loading" styleClass="p-datatable-gridlines"  [rowHover]="true" responsiveLayout="scroll" [scrollable]="true" class="m-1">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>Username</th>
-                        <th>Role</th>
-                    </tr>
+            <p-panel header="Usuarios" [collapsed]="false" class="line-height-3 m-0">
+                <ng-template pTemplate="icons">
+                    <button pButton label="Agregar usuario" icon="pi pi-plus-circle" class="p-button-secondary p-button-xs p-button-outlined mr-2" (click)="newUser()"></button>
                 </ng-template>
-                <ng-template pTemplate="body" let-data>
-                    <tr>
-                        <td>{{data.username}}</td>
-                        <td>{{data.role_id == 0 ? 'Usuario' : 'Administrador'}}</td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="emptymessage">
-                    <tr><td colspan="2">No se encontró información</td></tr>
-                </ng-template>
-                <ng-template pTemplate="loadingbody">
-                    <tr><td colspan="2">Cargando información, espere porfavor</td></tr>
-                </ng-template>
-            </p-table>
-            <p-paginator [rows]="req.limit" [totalRecords]="totalRecords" [rowsPerPageOptions]="rowsOptions"
-            [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="Total : {totalRecords} registros" (onPageChange)="changePage($event)"></p-paginator>
+                <p-table [value]="lstUsers" [loading]="loading" styleClass="p-datatable-gridlines"  [rowHover]="true" responsiveLayout="scroll" [scrollable]="true" class="m-1">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Username</th>
+                            <th>Role</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-data>
+                        <tr>
+                            <td>{{data.username}}</td>
+                            <td>{{data.role_id == 0 ? 'Usuario' : 'Administrador'}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr><td colspan="2">No se encontró información</td></tr>
+                    </ng-template>
+                    <ng-template pTemplate="loadingbody">
+                        <tr><td colspan="2">Cargando información, espere porfavor</td></tr>
+                    </ng-template>
+                </p-table>
+                <p-paginator [rows]="req.limit" [totalRecords]="totalRecords" [rowsPerPageOptions]="rowsOptions"
+                [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="Total : {totalRecords} registros" (onPageChange)="changePage($event)"></p-paginator>
+            </p-panel>
         </div>
+
+        <p-dialog [header]="titleForm" [(visible)]="isUserDialog" [style]="{width:'800px',height:'600px'}" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <form [formGroup]="formUser">
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="col-12">
+                            <p-dropdown
+                                [ngClass]="{'ng-dirty ng-invalid':submitted && formUser.get('role_id')?.hasError('required')}"
+                                required appendTo="body" formControlName="role_id" placeholder="Seleccione" [options]="lstRoles" optionLabel="role" optionValue="id" [showClear]="true">
+                            </p-dropdown>
+                            <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formUser.get('role_id')?.hasError('required')">Seleccione el rol</small>
+                        </div>
+                        <div class="col-12">
+                            <span class="p-float-label">
+                                <input id="username" type="text" class="p-inputtext p-component p-element" placeholder="Ingreser el usuario" pInputText formControlName="username" required>
+                                <label for="username">Username</label>
+                            </span>
+                            <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formUser.get('username')?.hasError('required')">Ingrese el usuario</small>
+                        </div>
+                        <div class="col-12">
+                            <span class="p-float-label">
+                                <input id="password" type="password" class="p-inputtext p-component p-element" placeholder="Ingreser la contraseña" pInputText formControlName="password" required>
+                                <label for="password">Contraseña</label>
+                            </span>
+                            <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formUser.get('password')?.hasError('required')">Ingrese la contraseña</small>
+                        </div>
+                    </div>
+                </form>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [loading]="loadingSave" (click)="saveUser()"></button>
+            </ng-template>
+        </p-dialog>
     </div>
 </div>

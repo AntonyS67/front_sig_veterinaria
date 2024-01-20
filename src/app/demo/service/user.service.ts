@@ -17,4 +17,13 @@ export class UserService {
     }).toPromise()
     .then(res => res);
   }
+
+  saveUser(req:any){
+    return this.http.post(`${URL_API}/api/user/create`,req,{
+        headers:{
+            'Content-Type':'application/json'
+        }
+    }).toPromise()
+    .then(res => res);
+  }
 }
