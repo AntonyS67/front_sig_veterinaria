@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
@@ -28,10 +29,12 @@ import { TooltipModule } from 'primeng/tooltip';
     ReactiveFormsModule,
     InputTextModule,
     ToastModule,
-    TooltipModule
+    TooltipModule,
+    ConfirmPopupModule
   ],
   providers:[
-    MessageService
+    MessageService,
+    ConfirmationService
   ]
 })
 export class SharedModule { }

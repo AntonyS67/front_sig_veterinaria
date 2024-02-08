@@ -26,4 +26,13 @@ export class UserService {
     }).toPromise()
     .then(res => res);
   }
+
+  deleteUser(req:any){
+    return this.http.post(`${URL_API}/api/user/delete`,req,{
+        headers:{
+            'Content-Type':'application/json'
+        }
+    }).toPromise()
+    .then(res => res);
+  }
 }

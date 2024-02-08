@@ -22,6 +22,10 @@
                                 <button (click)="editUser(data)" pButton icon="pi pi-user-edit" pTooltip="Editar" class="text-primary-600" tooltopPosition="top"
                                 style="width: auto;background: none;border: 0px;padding: 5px;"
                                 ></button>
+                                <button (click)="deleteUser($event,data)" pButton icon="pi pi-trash" pTooltip="Eliminar" class="text-red-500" tooltopPosition="top"
+                                style="width: auto;background: none;border: 0px;padding: 5px;"
+                                ></button>
+                                <p-confirmPopup key="deleteUser{{data.id}}"></p-confirmPopup>
                             </td>
                         </tr>
                     </ng-template>

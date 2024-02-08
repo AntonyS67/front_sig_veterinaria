@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ConfirmationService } from 'primeng/api';
 import { ROWS_DEFAULT, ROWS_OPTIONS } from '../../api/config';
 import { User } from '../../api/user';
 import { CommonService } from '../../service/common.service';
@@ -48,7 +49,7 @@ export class UserComponent implements OnInit{
     user!:User;
     isEdit:boolean = false;
 
-    constructor(public userService:UserService,public fb:FormBuilder,public commonService:CommonService){
+    constructor(public userService:UserService,public fb:FormBuilder,public commonService:CommonService,public confirmationService:ConfirmationService){
         this.formUser = fb.group({
             username:['',[Validators.required]],
             password:['',[Validators.required]],
@@ -141,6 +142,27 @@ export class UserComponent implements OnInit{
             username:['',[Validators.required]],
             password:[''],
             role_id:['',[Validators.required]]
+        })
+    }
+
+    deleteUser(event:Event,item:User){
+        this.confirmationService.confirm({
+            key:'deleteUser'+item.id,
+            target:event.target || new EventTarget,
+            message:'¿Desea eliminar el registro?',
+            acceptLabel:'Si',
+            icon:'pi pi-exclamation-triangle',
+            accept:() => {
+                this.userService.deleteUser({id:item.id}).then((res:any) => {
+                    if(!res.isSuccess){
+                        this.commonService.handleError(res.messageException);
+                    }else{
+                        this.commonService.handleSuccess();
+                        this.List(this.req);
+                    }
+                })
+
+            }
         })
     }
 }
