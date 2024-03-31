@@ -1,0 +1,78 @@
+<p-toast key="tst"></p-toast>
+<div class="grid">
+	<div class="col-12">
+		<div class="card">
+            <p-panel header="Razas" [collapsed]="false" class="line-height-3 m-0">
+                <ng-template pTemplate="icons">
+                    <button pButton label="Agregar raza" icon="pi pi-plus-circle" class="p-button-secondary p-button-xs p-button-outlined mr-2" (click)="newBreed()"></button>
+                </ng-template>
+                <p-table [value]="lstBreeds" [loading]="loading" styleClass="p-datatable-gridlines"  [rowHover]="true" responsiveLayout="scroll" [scrollable]="true" class="m-1">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Especie</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-data>
+                        <tr>
+                            <td>{{data.name}}</td>
+                            <td>{{data.specie}}</td>
+                            <td>
+                                <button (click)="editBreed(data)"
+                                pButton icon="pi pi-user-edit" pTooltip="Editar" class="text-primary-600" tooltopPosition="top"
+                                style="width: auto;background: none;border: 0px;padding: 5px;"
+                                ></button>
+                                <button (click)="deleteBreed($event,data)"
+                                pButton icon="pi pi-trash" pTooltip="Eliminar" class="text-red-500" tooltopPosition="top"
+                                style="width: auto;background: none;border: 0px;padding: 5px;"
+                                ></button>
+                                <p-confirmPopup key="deleteBreed{{data.id}}"></p-confirmPopup>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr><td colspan="2">No se encontró información</td></tr>
+                    </ng-template>
+                    <ng-template pTemplate="loadingbody">
+                        <tr><td colspan="2">Cargando información, espere porfavor</td></tr>
+                    </ng-template>
+                </p-table>
+                <p-paginator [rows]="req.limit" [totalRecords]="totalRecords" [rowsPerPageOptions]="rowsOptions"
+                [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="Total : {totalRecords} registros" (onPageChange)="changePage($event)"></p-paginator>
+            </p-panel>
+        </div>
+        <p-dialog [header]="titleForm" [(visible)]="isBreedDialog" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <form [formGroup]="formBreed">
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="col-12">
+                            <span class="p-float-label">
+                                <p-dropdown [(ngModel)]="breed.specie_id" formControlName="specie_id" [options]="lstSpecies"
+                                    placeholder="Seleccione una especie"
+                                    [showClear]="true"
+                                ></p-dropdown>
+                                <label for="specie_id">Especie</label>
+                            </span>
+                            <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formBreed.get('specie_id')?.hasError('required')">Seleccione una especie</small>
+                        </div>
+                        <div class="col-12">
+                            <span class="p-float-label">
+                                <input [(ngModel)]="breed.name" type="text" id="name"
+                                class="p-inputtext p-component p-element" placeholder="Ingreser el nombre" pInputText formControlName="name" required
+                                >
+                                <label for="name">Nombre</label>
+                            </span>
+                            <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formBreed.get('name')?.hasError('required')">Ingrese el nombre</small>
+
+                        </div>
+                    </div>
+                </form>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [loading]="loadingSave" (click)="save(breed)"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>
