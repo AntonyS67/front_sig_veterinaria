@@ -5,6 +5,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { DialogModule } from 'primeng/dialog';
+import { ImageModule } from 'primeng/image';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { PanelModule } from 'primeng/panel';
@@ -30,7 +31,8 @@ import { TooltipModule } from 'primeng/tooltip';
     InputTextModule,
     ToastModule,
     TooltipModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    ImageModule
   ],
   providers:[
     MessageService,
