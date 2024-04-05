@@ -1,6 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { Client } from '../../api/client';
 import { DOCUMENT_TYPE, ROWS_DEFAULT, ROWS_OPTIONS } from '../../api/config';
@@ -11,7 +12,7 @@ import { SharedModule } from '../../shared/shared/shared.module';
 @Component({
   selector: 'app-client',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule,RouterModule],
   templateUrl: './client.component.html',
   styleUrl: './client.component.scss',
   providers:[CommonService]

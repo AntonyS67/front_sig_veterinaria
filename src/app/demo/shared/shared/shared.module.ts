@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { DialogModule } from 'primeng/dialog';
 import { ImageModule } from 'primeng/image';
@@ -32,7 +33,8 @@ import { TooltipModule } from 'primeng/tooltip';
     ToastModule,
     TooltipModule,
     ConfirmPopupModule,
-    ImageModule
+    ImageModule,
+    CalendarModule
   ],
   providers:[
     MessageService,
