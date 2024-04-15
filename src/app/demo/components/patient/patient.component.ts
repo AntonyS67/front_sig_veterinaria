@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, Inject, LOCALE_ID, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { Breed } from '../../api/breed';
 import { Patient } from '../../api/patient';
@@ -14,7 +14,7 @@ import { ROWS_ALL, ROWS_DEFAULT, ROWS_OPTIONS } from './../../api/config';
 @Component({
   selector: 'app-patient',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule,RouterModule],
   templateUrl: './patient.component.html',
   styleUrl: './patient.component.scss',
   providers:[CommonService]
