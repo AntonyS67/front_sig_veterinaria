@@ -1,66 +1,73 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { ROWS_DEFAULT, ROWS_OPTIONS } from '../../api/config';
-import { Consult } from '../../api/consult';
+import { Exam } from '../../api/exam';
 import { CommonService } from '../../service/common.service';
-import { ConsultService } from '../../service/consult.service';
+import { ExamService } from '../../service/exam.service';
 import { SharedModule } from '../../shared/shared/shared.module';
 
 @Component({
-  selector: 'app-consult',
+  selector: 'app-exams',
   standalone: true,
-  imports: [SharedModule,RouterModule],
-  templateUrl: './consult.component.html',
-  styleUrl: './consult.component.scss',
+  imports: [SharedModule],
+  templateUrl: './exams.component.html',
+  styleUrl: './exams.component.scss',
   providers:[CommonService]
 })
-export class ConsultComponent implements OnInit{
+export class ExamsComponent implements OnInit{
     private route = inject(ActivatedRoute)
     id:string = this.route.snapshot.paramMap.get("id")
 
-    req={
+    req = {
         index:0,
         limit:ROWS_DEFAULT,
-        patient_id:this.id
+        consult_id:this.id
     }
 
-    lstData:Consult[]
+    lstData:Exam[];
     loading:boolean = false
     totalRecords:number = ROWS_DEFAULT
     rowsOptions:number[] = ROWS_OPTIONS
     first:number = 0
-    titleForm:string = 'Nueva consulta'
+    titleForm:string = 'Nuevo examen'
     isDialog:boolean = false
     loadingSave:boolean = false
     submitted:boolean = false
 
-    consult!:Consult;
-    formConsult:FormGroup
+    exam!:Exam;
+    formExam:FormGroup;
 
     constructor(
-        private consultService:ConsultService,
+        private examService:ExamService,
         private fb:FormBuilder,
         private commonService:CommonService,
         private confirmationService:ConfirmationService
     ){
-        this.formConsult = this.fb.group({
-            reason:[''],
-            antecedents:[''],
-            diseases:[''],
-            next_consult:['']
+        this.formExam = this.fb.group({
+            mucosa:[''],
+            piel:[''],
+            conjuntival:[''],
+            oral:[''],
+            sis_reproductor:[''],
+            rectal:[''],
+            ojos:[''],
+            nodulos_linfaticos:[''],
+            locomocion:[''],
+            sis_cardiovascular:[''],
+            sis_respiratorio:[''],
+            sis_digestivo:[''],
+            sis_urinario:[''],
         })
-
     }
-
     ngOnInit(): void {
-        this.getConsults(this.req)
+        this.getExams(this.req)
     }
 
-    getConsults(request:any){
+    getExams(request:any){
         try {
-            this.consultService.List(request).then((res:any) => {
+            this.examService.List(request).then((res:any) => {
                 if(res.isSuccess){
                     this.lstData = res.data
                     this.loading = false
@@ -68,68 +75,73 @@ export class ConsultComponent implements OnInit{
                 }
             })
         } catch (error) {
-            console.error(error);
+            console.log(error);
+
         }
     }
-
     new(){
         this.isDialog = true
         this.submitted = false
-        this.consult = {}
+        this.exam = {}
     }
 
-    save(item:Consult){
+    save(item:Exam){
         this.submitted = true
-        let value = this.formConsult.value
-
-        for(let c in this.formConsult.controls){
-            this.formConsult.controls[c].markAsTouched()
+        let value = this.formExam.value
+        for(let c in this.formExam.controls){
+            this.formExam.controls[c].markAsTouched()
         }
-
-        if(this.formConsult.valid){
+        if(this.formExam.valid){
             this.loadingSave = true
-
             const req = {
                 id:item.id ? item.id : 0,
-                reason:value.reason,
-                antecedents:value.antecedents,
-                diseases:value.diseases,
-                next_consult:new Date(value.next_consult).toISOString(),
-                patient_id:this.id
+                mucosa:value.mucosa,
+                piel:value.piel,
+                conjuntival:value.conjuntival,
+                oral:value.oral,
+                sis_reproductor:value.sis_reproductor,
+                rectal:value.rectal,
+                ojos:value.ojos,
+                nodulos_linfaticos:value.nodulos_linfaticos,
+                locomocion:value.locomocion,
+                sis_cardiovascular:value.sis_cardiovascular,
+                sis_respiratorio:value.sis_respiratorio,
+                sis_digestivo:value.sis_digestivo,
+                sis_urinario:value.sis_urinario,
+                consult_id:this.id
             }
 
-            this.consultService.Save(req).then((res:any) =>{
+            this.examService.Save(req).then((res:any) => {
                 if(res.isSuccess){
                     this.commonService.handleSuccess()
-                    this.getConsults(this.req)
+                    this.getExams(this.req)
                 }else{
                     this.commonService.handleError(res.messageException)
                 }
             })
-
             this.hideDialog()
         }
     }
 
-    edit(item:Consult){
+    edit(item:Exam){
         this.isDialog = true
         this.submitted = false
-        this.consult = item
-        this.titleForm = 'Editar consulta'
+        this.exam = item
+        this.titleForm = 'Editar examen'
     }
 
-    delete(event:Event,item:Consult){
+    delete(event:Event,item:Exam){
         this.confirmationService.confirm({
-            key:'deleteConsult'+item.id,
+            key:'deleteExam'+item.id,
             target:event.target || new EventTarget,
             message:'¿Desea eliminar el registro?',
             acceptLabel:'Si',
             icon:'pi pi-exclamation-triangle',
             accept:() => {
-                this.consultService.Delete(item.id).then((res:any) => {
+                this.examService.Delete(item.id).then((res:any) => {
                     if(res.isSuccess){
                         this.commonService.handleSuccess()
-                        this.getConsults(this.req)
+                        this.getExams(this.req)
                     }else{
                         this.commonService.handleError(res.messageException)
                     }
@@ -143,7 +155,6 @@ export class ConsultComponent implements OnInit{
         this.submitted = false
         this.loadingSave = false
     }
-
     changePage(event:any){
         this.req.index = event.first
         this.req.limit = event.rows
