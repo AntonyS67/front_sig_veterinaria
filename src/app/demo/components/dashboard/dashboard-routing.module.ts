@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { BreedComponent } from '../breed/breed.component';
 import { ClientComponent } from '../client/client.component';
 import { ConsultComponent } from '../consult/consult.component';
+import { DiagnosticosComponent } from '../diagnosticos/diagnosticos.component';
 import { ExamsComponent } from '../exams/exams.component';
 import { PatientComponent } from '../patient/patient.component';
 import { SpecieComponent } from '../specie/specie.component';
@@ -19,6 +20,7 @@ import { DashboardComponent } from './dashboard.component';
         { path: 'client/:id/patient', component: PatientComponent },
         { path: 'patient/:id/consults', component: ConsultComponent },
         { path: 'consults/:id/exams', component: ExamsComponent },
+        { path: 'consults/:id/diagnosticos', component: DiagnosticosComponent },
     ])],
     exports: [RouterModule]
 })
