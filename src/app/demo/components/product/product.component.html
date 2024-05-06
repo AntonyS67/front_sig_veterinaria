@@ -1,0 +1,141 @@
+<p-toast key="tst"></p-toast>
+<div class="grid">
+	<div class="col-12">
+		<div class="card">
+            <p-panel header="Productos" [collapsed]="false" class="line-height-3 m-0">
+                <ng-template pTemplate="icons">
+                    <button pButton label="Agregar producto" icon="pi pi-plus-circle" class="p-button-secondary p-button-xs p-button-outlined mr-2" (click)="new()"></button>
+                </ng-template>
+                <p-table [value]="lstData" [loading]="loading" styleClass="p-datatable-gridlines"  [rowHover]="true" responsiveLayout="scroll" [scrollable]="true" class="m-1">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Foto</th>
+                            <th>Nombre</th>
+                            <th>Costo</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Proveedor</th>
+                            <th>Estado producto</th>
+                            <th>Categoria</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-data>
+                        <tr>
+                            <td>
+                                <p-image src="{{data.photo}}" alt="{{data.names}}" width="50" [preview]="true"></p-image>
+                            </td>
+                            <td>{{data.name}}</td>
+                            <td>{{data.cost}}</td>
+                            <td>{{data.price}}</td>
+                            <td>{{data.stock}}</td>
+                            <td>{{data.proveedor}}</td>
+                            <td>{{data.status_product}}</td>
+                            <td>{{data.category}}</td>
+                            <td>
+                                <button (click)="edit(data)"
+                                pButton icon="pi pi-user-edit" pTooltip="Editar" class="text-primary-600" tooltopPosition="top"
+                                style="width: auto;background: none;border:0;padding:5px;"></button>
+                                <button (click)="delete($event,data)"
+                                pButton icon="pi pi-trash" pTooltip="Eliminar" class="text-red-500" tooltopPosition="top"
+                                style="width: auto;background: none;border:0;padding:5px;"></button>
+                                <p-confirmPopup key="deleteProduct{{data.id}}"></p-confirmPopup>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr><td colspan="10">No se encontró información</td></tr>
+                    </ng-template>
+                    <ng-template pTemplate="loadingbody">
+                        <tr><td colspan="10">Cargando información, espere porfavor</td></tr>
+                    </ng-template>
+                </p-table>
+                <p-paginator [rows]="req.limit" [totalRecords]="totalRecords" [rowsPerPageOptions]="rowsOptions"
+                [showCurrentPageReport]="true" [first]="first" currentPageReportTemplate="Total : {totalRecords} registros" (onPageChange)="changePage($event)"></p-paginator>
+            </p-panel>
+        </div>
+        <p-dialog [header]="titleForm" [(visible)]="isDialog" [modal]="true" class="p-fluid" [style]="{width:'450px'}">
+            <ng-template pTemplate="content">
+                <form [formGroup]="formProduct" enctype="multipart/form-data">
+                    <div class="col-12">
+                        <h5>Foto</h5>
+                        <input type="file" formControlName="photo" id="photo" accept="image/*" (change)="onFileChange($event)">
+                    </div>
+                    <div class="col-12">
+                        <span class="p-float-label">
+                            <p-dropdown [(ngModel)]="product.category_id" formControlName="category_id" [options]="lstCategories"
+                                placeholder="Seleccione la categoria"
+                                [showClear]="true"
+                            ></p-dropdown>
+                            <label for="category_id">Categoria</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formProduct.get('category_id')?.hasError('required')">Seleccion la categoria</small>
+                    </div>
+                    <div class="col-12">
+                        <span class="p-float-label">
+                            <input [(ngModel)]="product.name" type="text" id="name"
+                            class="p-inputtext p-component p-element" placeholder="Ingrese el nombre" pInputText formControlName="name" required
+                            >
+                            <label for="name">Nombre</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formProduct.get('name')?.hasError('required')">Ingrese el nombre</small>
+                    </div>
+                    <div class="col-12">
+                        <span class="p-float-label">
+                            <input [(ngModel)]="product.cost" type="number" id="cost"
+                            class="p-inputtext p-component p-element" placeholder="Ingrese el costo" pInputText formControlName="cost"
+                            >
+                            <label for="cost">Costo</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formProduct.get('cost')?.hasError('required')">Ingrese el costo</small>
+
+                    </div>
+                    <div class="col-12">
+                        <span class="p-float-label">
+                            <input [(ngModel)]="product.price" type="number" id="price"
+                            class="p-inputtext p-component p-element" placeholder="Ingrese el precio" pInputText formControlName="price"
+                            >
+                            <label for="price">Precio</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formProduct.get('price')?.hasError('required')">Ingrese el precio</small>
+
+                    </div>
+                    <div class="col-12">
+                        <span class="p-float-label">
+                            <input [(ngModel)]="product.stock" type="number" id="stock"
+                            class="p-inputtext p-component p-element" placeholder="Ingrese el stock" pInputText formControlName="stock" required
+                            >
+                            <label for="stock">Stock</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formProduct.get('stock')?.hasError('required')">Ingrese el stock</small>
+
+                    </div>
+                    <div class="col-12">
+                        <span class="p-float-label">
+                            <input [(ngModel)]="product.proveedor" type="text" id="proveedor"
+                            class="p-inputtext p-component p-element" placeholder="Ingrese el proveedor" pInputText formControlName="proveedor" required
+                            >
+                            <label for="proveedor">Proveedor</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formProduct.get('proveedor')?.hasError('required')">Ingrese el proveedor</small>
+
+                    </div>
+                    <div class="col-12">
+                        <span class="p-float-label">
+                            <input [(ngModel)]="product.status_product" type="text" id="status_product"
+                            class="p-inputtext p-component p-element" placeholder="Ingrese el estado del producto" pInputText formControlName="status_product" required
+                            >
+                            <label for="status_product">Estado del producto</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid p-error" *ngIf="submitted && formProduct.get('status_product')?.hasError('required')">Ingrese el estado del producto</small>
+
+                    </div>
+                </form>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [loading]="loadingSave" (click)="save(product)"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>
