@@ -25,6 +25,9 @@
                                 <button (click)="delete($event,data)"
                                 pButton icon="pi pi-trash" pTooltip="Eliminar" class="text-red-500" tooltopPosition="top"
                                 style="width: auto;background: none;border:0;padding:5px;"></button>
+                                <a [routerLink]="['/diagnostico',data.id,'tratamientos']" pTooltip="Tratamientos"
+                                class="p-element p-ripple p-button-text p-button-rounded p-button-plain p-button p-component p-button-icon-only pi pi-chevron-right"
+                                tooltopPosition="top" style="width: auto;background: none;border:0;padding:5px;height: auto;"></a>
                                 <p-confirmPopup key="deleteDiagnostico{{data.id}}"></p-confirmPopup>
                             </td>
                         </tr>
@@ -61,3 +64,4 @@
         </p-dialog>
     </div>
 </div>
+<router-outlet></router-outlet>

@@ -9,6 +9,8 @@ import { ExamsComponent } from '../exams/exams.component';
 import { PatientComponent } from '../patient/patient.component';
 import { ProductComponent } from '../product/product.component';
 import { SpecieComponent } from '../specie/specie.component';
+import { CreateTratamientoComponent } from '../tratamientos/create/create.component';
+import { TratamientosComponent } from '../tratamientos/tratamientos.component';
 import { UserComponent } from '../user/user.component';
 import { DashboardComponent } from './dashboard.component';
 
@@ -25,6 +27,9 @@ import { DashboardComponent } from './dashboard.component';
         { path: 'consults/:id/diagnosticos', component: DiagnosticosComponent },
         { path: 'category', component: CategoryComponent },
         { path: 'product', component: ProductComponent },
+        { path: 'diagnostico/:id/tratamientos', component: TratamientosComponent },
+        { path: 'diagnostico/:id/tratamientos/create', component: CreateTratamientoComponent },
+        { path: 'diagnostico/:id/tratamientos/:tratamiento_id/edit', component: CreateTratamientoComponent },
     ])],
     exports: [RouterModule]
 })

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { ROWS_DEFAULT, ROWS_OPTIONS } from '../../api/config';
 import { CommonService } from '../../service/common.service';
@@ -11,7 +11,7 @@ import { Diagnostico } from './../../api/diagnostico';
 @Component({
   selector: 'app-diagnosticos',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule,RouterModule],
   templateUrl: './diagnosticos.component.html',
   styleUrl: './diagnosticos.component.scss',
   providers:[CommonService]
