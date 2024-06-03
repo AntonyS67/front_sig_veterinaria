@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { URL_API } from '../api/config';
 
 @Injectable({
@@ -34,5 +35,8 @@ export class RecetasService {
         }
     }).toPromise()
     .then(res => res)
+  }
+  GeneratePDF(id:number):Observable<Blob>{
+    return this.http.post(URL_API+"/api/recetas/pdf",{id},{responseType:'blob'})
   }
 }

@@ -37,6 +37,9 @@
                                 <button (click)="delete($event,data)"
                                 pButton icon="pi pi-trash" pTooltip="Eliminar" class="text-red-500" tooltopPosition="top"
                                 style="width: auto;background: none;border:0;padding:5px;"></button>
+                                <button (click)="pdf(data)"
+                                pButton icon="pi pi-file" pTooltip="Generar PDF" class="text-primary-500" tooltopPosition="top"
+                                style="width: auto;background: none;border:0;padding:5px;"></button>
                                 <p-confirmPopup key="deleteReceta{{data.id}}"></p-confirmPopup>
                             </td>
                         </tr>

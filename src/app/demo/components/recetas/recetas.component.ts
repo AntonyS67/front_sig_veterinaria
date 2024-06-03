@@ -134,6 +134,20 @@ export class RecetasComponent implements OnInit{
         })
     }
 
+    pdf(item:Receta){
+        try{
+            this.recetasService.GeneratePDF(item.id).subscribe((res:Blob) => {
+                const url = window.URL.createObjectURL(res)
+                const a = document.createElement("a")
+                a.href = url
+                a.download = `receta_medica_${item.paciente}.pdf`
+                a.click()
+                window.URL.revokeObjectURL(url);
+            })
+        }catch(error){
+            console.log(error);
+        }
+    }
     changePage(event:any){
         this.req.index = event.first
         this.req.limit = event.rows
